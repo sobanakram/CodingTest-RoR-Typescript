@@ -23,12 +23,16 @@ const TodoList: React.FC<Props> = ({ todoItems }) => {
 
   const checkBoxOnCheck = (
     e: React.ChangeEvent<HTMLInputElement>,
-    todoItemId: number
+    todoItem: TodoItem
   ): void => {
+    todoItem.checked = e.target.checked
     axios.post("/todo", {
-      id: todoItemId,
+      id: todoItem.id,
       checked: e.target.checked,
     });
+    setTimeout(() => {
+      e.target.checked = todoItem.checked
+    }, 100)
   };
 
   const resetButtonOnClick = (): void => {
@@ -45,7 +49,7 @@ const TodoList: React.FC<Props> = ({ todoItems }) => {
               type="checkbox"
               label={todo.title}
               checked={todo.checked}
-              onChange={(e) => checkBoxOnCheck(e, todo.id)}
+              onChange={(e) => checkBoxOnCheck(e, todo)}
             />
           </ListGroup.Item>
         ))}
